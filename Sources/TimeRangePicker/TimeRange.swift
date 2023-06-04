@@ -16,7 +16,7 @@ import Foundation
 ///     print(morningTime.start) // 21600.0
 ///     print(morningTime.end) // 43200.0
 ///
-public struct TimeRange: Equatable {
+public struct TimeRange: Codable, Equatable, Sendable {
 
     /// The start time of the range, represented in seconds since midnight.
     public var start: TimeInterval
