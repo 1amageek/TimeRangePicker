@@ -146,7 +146,6 @@ struct Arc_Previews: PreviewProvider {
                                 .onEnded { value in
                                     startAngle = (startAngle + rotation).truncatingRemainder(dividingBy: 360)
                                     endAngle = (startAngle + angleDifference).truncatingRemainder(dividingBy: 360)
-//                                    rotation = 0
                                 }
                         )
                 }
