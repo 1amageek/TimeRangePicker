@@ -28,7 +28,7 @@ You can use The Swift Package Manager to install `TimeRangePicker` by adding the
 To use TimeRangePicker in your SwiftUI views:
 
 ```swift
-@State var timeRange = TimeRange(start: 3600, end: 7200)  // 1:00 - 2:00
+@State var timeRange = 3600..<7200 // 1:00 - 2:00
 
 var body: some View {
     TimeRangePicker($timeRange)
