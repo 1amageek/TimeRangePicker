@@ -250,7 +250,6 @@ struct TimeRangePicker_Previews: PreviewProvider {
                 .monospacedDigit()
 
                 TimeRangePicker($range)
-                    .padding(.horizontal, 32)
                     .frame(height: 380)
 
             }
@@ -261,7 +260,11 @@ struct TimeRangePicker_Previews: PreviewProvider {
 
 
     static var previews: some View {
-        ContentView()
+        List {
+            ContentView()
+                .listRowInsets(EdgeInsets())
+        }
+
     }
 }
 
