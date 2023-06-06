@@ -40,7 +40,9 @@ public struct TimeRangePicker: View {
     /// - Returns: A new `TimeRangePicker` instance.
     ///
     public init(_ value: Binding<Range<TimeInterval>>, in range: Range<TimeInterval> = 3600..<81800) {
-        self._selection = State(initialValue: TimeRange(start: value.wrappedValue.lowerBound, end: value.wrappedValue.upperBound))
+        let start = value.wrappedValue.lowerBound.truncatingRemainder(dividingBy: 86400.0)
+        let end = value.wrappedValue.upperBound.truncatingRemainder(dividingBy: 86400.0)
+        self._selection = State(initialValue: TimeRange(start: start, end: end))
         self._value = value
         self.minimumDifference = CGFloat(range.lowerBound / 86400.0 * 360.0)
         self.maximumDifference = CGFloat(range.upperBound / 86400.0 * 360.0)
@@ -257,7 +259,7 @@ struct TimeRangePicker_Previews: PreviewProvider {
 
     struct ContentView: View {
 
-        @State var range: Range<TimeInterval> = 0..<(3600 * 5)
+        @State var range: Range<TimeInterval> = Date().timeIntervalSince1970..<Date().addingTimeInterval(3600).timeIntervalSince1970
 
         var formatter: DateComponentsFormatter = {
             let formatter = DateComponentsFormatter()
