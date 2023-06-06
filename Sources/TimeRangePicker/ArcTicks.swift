@@ -24,8 +24,9 @@ struct Arc: Shape {
     func path(in rect: CGRect) -> Path {
         var path = Path()
         let center = CGPoint(x: rect.midX, y: rect.midY)
+        let radius = min(rect.width, rect.height) / 2
         path.addArc(center: center,
-                    radius: rect.width / 2,
+                    radius: radius,
                     startAngle: Angle(degrees: Double(startAngle)),
                     endAngle: Angle(degrees: Double(endAngle)),
                     clockwise: false)
