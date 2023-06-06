@@ -55,7 +55,7 @@ struct Ticks: Shape {
 
     func path(in rect: CGRect) -> Path {
         let center = CGPoint(x: rect.midX, y: rect.midY)
-        let radius = rect.width / 2
+        let radius = min(rect.width, rect.height) / 2
         let startRadians = startAngle * CGFloat.pi / 180
         let endRadians = endAngle * CGFloat.pi / 180
         let step = 360.0 / CGFloat(divisions) * CGFloat.pi / 180
