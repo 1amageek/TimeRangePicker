@@ -18,8 +18,10 @@ public struct TimeRangePicker: View {
 
     @Environment(\.colorScheme) var colorScheme: ColorScheme
 
+    @Binding var value: Range<TimeInterval>
+
     /// A binding to a `TimeRange` that determines the currently selected start and end time.
-    @Binding var value: TimeRange
+    @State var selection: TimeRange
 
     @State private var initialStartAngle: CGFloat = 0
 
@@ -37,7 +39,8 @@ public struct TimeRangePicker: View {
     ///
     /// - Returns: A new `TimeRangePicker` instance.
     ///
-    public init(_ value: Binding<TimeRange>, in range: Range<TimeInterval> = 3600..<81800) {
+    public init(_ value: Binding<Range<TimeInterval>>, in range: Range<TimeInterval> = 3600..<81800) {
+        self._selection = State(initialValue: TimeRange(start: value.wrappedValue.lowerBound, end: value.wrappedValue.upperBound))
         self._value = value
         self.minimumDifference = CGFloat(range.lowerBound / 86400.0 * 360.0)
         self.maximumDifference = CGFloat(range.upperBound / 86400.0 * 360.0)
@@ -53,17 +56,17 @@ public struct TimeRangePicker: View {
 
     var startAngle: Binding<CGFloat> {
         Binding {
-            TimeRangePicker.timeToAngle(self.value.start)
+            TimeRangePicker.timeToAngle(self.selection.start)
         } set: { newValue in
-            self.value.start = TimeRangePicker.angleToTime(newValue).roundToNearest(300)
+            self.selection.start = TimeRangePicker.angleToTime(newValue).roundToNearest(300)
         }
     }
 
     var endAngle: Binding<CGFloat> {
         Binding {
-            TimeRangePicker.timeToAngle(self.value.end)
+            TimeRangePicker.timeToAngle(self.selection.end)
         } set: { newValue in
-            self.value.end = TimeRangePicker.angleToTime(newValue).roundToNearest(300)
+            self.selection.end = TimeRangePicker.angleToTime(newValue).roundToNearest(300)
         }
     }
 
@@ -186,11 +189,18 @@ public struct TimeRangePicker: View {
                 }
             }
         }
-        .onChange(of: value) { [previousValue = value] newValue in
+        .onChange(of: selection) { [previousValue = selection] newValue in
             let startDifference = abs(newValue.start - previousValue.start)
             let endDifference = abs(newValue.end - previousValue.end)
             if startDifference >= 300 || endDifference >= 300 {
                 generator.impactOccurred()
+            }
+            let start = newValue.start
+            let end = newValue.end
+            if start < end {
+                self.value = start..<end
+            } else {
+                self.value = start..<(end + 3600 * 24)
             }
         }
         .padding(28)
@@ -247,7 +257,7 @@ struct TimeRangePicker_Previews: PreviewProvider {
 
     struct ContentView: View {
 
-        @State var range: TimeRange = TimeRange(start: 0.0, end: 3600 * 5)
+        @State var range: Range<TimeInterval> = 0..<(3600 * 5)
 
         var formatter: DateComponentsFormatter = {
             let formatter = DateComponentsFormatter()
@@ -264,8 +274,8 @@ struct TimeRangePicker_Previews: PreviewProvider {
                 Text("TimeRangePicker")
                     .font(.system(.title, design: .rounded, weight: .black))
                 HStack(spacing: 64) {
-                    Text(formatter.string(from: range.start)!)
-                    Text(formatter.string(from: range.end)!)
+                    Text(formatter.string(from: range.lowerBound)!)
+                    Text(formatter.string(from: range.upperBound.truncatingRemainder(dividingBy: 3600 * 24))!)
                 }
                 .font(.system(.title2, design: .rounded, weight: .black))
                 .monospacedDigit()
