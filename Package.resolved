@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "clockface",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/1amageek/ClockFace.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "005bd69c3d482ac9cd3a4ad030cc783f59d482a2"
+      }
+    }
+  ],
+  "version" : 2
+}

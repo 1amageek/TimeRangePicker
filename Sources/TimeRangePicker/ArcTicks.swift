@@ -101,7 +101,7 @@ struct ArcTicks: View {
             Arc(startAngle: startAngle, endAngle: endAngle, lineWidth: lineWidth)
                 .foregroundColor(Color(UIColor.tertiarySystemBackground))
             Ticks(startAngle: 0, endAngle: 360, divisions: divisions, tickWidth: tickWidth)
-                .stroke(Color(UIColor.systemGray4), style: .init(lineWidth: 4, lineCap: .round))
+                .stroke(Color(UIColor.systemGray3), style: .init(lineWidth: 4, lineCap: .round))
                 .mask(Arc(startAngle: startAngle, endAngle: endAngle))
         }
         .compositingGroup()

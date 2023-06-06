@@ -1,4 +1,5 @@
 import SwiftUI
+import ClockFace
 
 /// A SwiftUI view that provides a visual picker for a range of time.
 ///
@@ -99,11 +100,27 @@ public struct TimeRangePicker: View {
     public var body: some View {
         ZStack {
 
-            ClockFace()
-                .padding(6)
-                .background(Color(UIColor.tertiarySystemBackground), in: Circle())
-                .padding(28)
-                .font(.footnote)
+            ClockFace(0..<24, step: 2) { index in
+                Text(index, format: .number)
+                    .font(.system(.callout, design: .rounded, weight: .semibold))
+                    .monospacedDigit()
+                    .foregroundColor(index % 3 == 0 ? .primary : .secondary)
+            }
+            .overlay {
+                VStack {
+                    Image(systemName: "moon.stars.fill")
+                        .foregroundColor(.cyan)
+                    Spacer()
+                    Image(systemName: "sun.max.fill")
+                        .foregroundColor(.yellow)
+                }
+                .font(.title3)
+                .padding(50)
+            }
+            .padding(6)
+            .background(Color(UIColor.tertiarySystemBackground), in: Circle())
+            .padding(28)
+
 
             GeometryReader { proxy in
                 ArcTicks(startAngle: startAngle.wrappedValue, endAngle: endAngle.wrappedValue)
@@ -169,8 +186,12 @@ public struct TimeRangePicker: View {
                 }
             }
         }
-        .onChange(of: value) { newValue in
-            generator.impactOccurred()
+        .onChange(of: value) { [previousValue = value] newValue in
+            let startDifference = abs(newValue.start - previousValue.start)
+            let endDifference = abs(newValue.end - previousValue.end)
+            if startDifference >= 300 || endDifference >= 300 {
+                generator.impactOccurred()
+            }
         }
         .padding(28)
         .background(colorScheme == .light ? Color(UIColor.secondarySystemBackground) : Color(UIColor.systemBackground), in: Circle())

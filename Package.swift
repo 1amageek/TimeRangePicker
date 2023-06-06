@@ -11,11 +11,13 @@ let package = Package(
             name: "TimeRangePicker",
             targets: ["TimeRangePicker"]),
     ],
-    dependencies: [],
+    dependencies: [
+        .package(url: "https://github.com/1amageek/ClockFace.git", branch: "main")
+    ],
     targets: [
         .target(
             name: "TimeRangePicker",
-            dependencies: []),
+            dependencies: ["ClockFace"]),
         .testTarget(
             name: "TimeRangePickerTests",
             dependencies: ["TimeRangePicker"]),
