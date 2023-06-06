@@ -115,7 +115,7 @@ public struct TimeRangePicker: View {
                         .foregroundColor(.yellow)
                 }
                 .font(.title3)
-                .padding(50)
+                .padding(60)
             }
             .padding(6)
             .background(Color(UIColor.tertiarySystemBackground), in: Circle())
