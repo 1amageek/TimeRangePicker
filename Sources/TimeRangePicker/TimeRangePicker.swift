@@ -227,7 +227,7 @@ struct KnobView<Content>: View where Content: View {
     var body: some View {
         GeometryReader { proxy in
             let center = CGPoint(x: proxy.size.width / 2, y: proxy.size.height / 2)
-            let radius = proxy.size.width / 2
+            let radius = min(proxy.size.width, proxy.size.height) / 2
             let position = CGPoint(
                 x: center.x + radius * cos((angle + offsetAngle) / 180 * .pi),
                 y: center.y + radius * sin((angle + offsetAngle) / 180 * .pi)
@@ -255,6 +255,7 @@ extension TimeInterval {
         return (self / value).rounded(.toNearestOrEven) * value
     }
 }
+
 struct TimeRangePicker_Previews: PreviewProvider {
 
     struct ContentView: View {
