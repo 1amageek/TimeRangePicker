@@ -207,6 +207,7 @@ public struct TimeRangePicker: View {
         }
         .padding(28)
         .background(colorScheme == .light ? Color(UIColor.secondarySystemBackground) : Color(UIColor.systemBackground), in: Circle())
+        .compositingGroup()
     }
 }
 
